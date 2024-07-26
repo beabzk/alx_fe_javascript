@@ -96,17 +96,22 @@ function importFromJsonFile(event) {
 
 // Function to populate categories in the filter dropdown
 function populateCategories() {
-  const categoryFilter = document.getElementById('categoryFilter');
-  const categories = ['all', ...new Set(quotes.map(quote => quote.category))];
-  
-  categoryFilter.innerHTML = categories.map(category => 
-    `<option value="${category}">${category === 'all' ? 'All Categories' : category}</option>`
-  ).join('');
-  
-  // Restore last selected category
-  const lastCategory = localStorage.getItem('lastCategory') || 'all';
-  categoryFilter.value = lastCategory;
-}
+    const categoryFilter = document.getElementById('categoryFilter');
+    const categories = ['all', ...new Set(quotes.map(quote => quote.category))];
+    
+    categoryFilter.innerHTML = ''; // Clear existing options
+    
+    categories.forEach(category => {
+      const option = document.createElement('option');
+      option.value = category;
+      option.textContent = category === 'all' ? 'All Categories' : category;
+      categoryFilter.appendChild(option);
+    });
+    
+    // Restore last selected category
+    const lastCategory = localStorage.getItem('lastCategory') || 'all';
+    categoryFilter.value = lastCategory;
+  }
 
 // Function to filter quotes based on selected category
 function filterQuotes() {
