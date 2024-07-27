@@ -107,12 +107,42 @@ function filterQuotesByCategory() {
   return selectedCategory === 'all' ? quotes : quotes.filter(quote => quote.author === selectedCategory);
 }
 
-// Function to sync data with server
-async function syncWithServer() {
+// Function to fetch quotes from the server
+async function fetchQuotesFromServer() {
   try {
     const response = await fetch(`${API_URL}?limit=100`);
     const data = await response.json();
-    const serverQuotes = data.quotes;  // Access the quotes array from the response
+    return data.quotes;
+  } catch (error) {
+    console.error('Error fetching quotes from server:', error);
+    notifyUser('Failed to fetch quotes from server', 'error');
+    return [];
+  }
+}
+
+// Function to post a new quote to the server
+async function postQuoteToServer(quote) {
+  try {
+    const response = await fetch(API_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(quote),
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error posting quote to server:', error);
+    notifyUser('Failed to post quote to server', 'error');
+    return null;
+  }
+}
+
+// Function to sync data with server
+async function syncQuotes() {
+  try {
+    const serverQuotes = await fetchQuotesFromServer();
     
     // Simple conflict resolution: merge local and server quotes
     const mergedQuotes = mergeQuotes(quotes, serverQuotes);
@@ -163,7 +193,7 @@ function notifyUser(message, type = 'info') {
 
 // Event listeners
 document.getElementById('newQuote').addEventListener('click', showRandomQuote);
-document.getElementById('syncQuotes').addEventListener('click', syncWithServer);
+document.getElementById('syncQuotes').addEventListener('click', syncQuotes);
 
 // Initialize the application
 loadQuotes();
@@ -171,7 +201,7 @@ showRandomQuote();
 createAddQuoteForm();
 
 // Periodic sync (every 5 minutes)
-setInterval(syncWithServer, 5 * 60 * 1000);
+setInterval(syncQuotes, 5 * 60 * 1000);
 
 // Optional: Display last viewed quote from session storage on page load
 const lastViewedQuote = sessionStorage.getItem('lastViewedQuote');
