@@ -1,20 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dynamic Quote Generator</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Quote Generator</title>
+    <style>
+        .notification {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .notification.error {
+            background-color: #ffdddd;
+            border-color: #ff0000;
+        }
+    </style>
 </head>
 <body>
-  <h1>Dynamic Quote Generator</h1>
-  <select id="categoryFilter" onchange="filterQuotes()">
-    <option value="all">All Categories</option>
-    <!-- Dynamically populated categories -->
-  </select>
-  <div id="quoteDisplay"></div>
-  <button id="newQuote">Show New Quote</button>
-  <button id="exportQuotes">Export Quotes</button>
-  <input type="file" id="importFile" accept=".json" onchange="importFromJsonFile(event)" />
-  <script src="script.js"></script>
+    <h1>Dynamic Quote Generator</h1>
+    
+    <select id="categoryFilter" onchange="filterQuotes()">
+        <option value="all">All Authors</option>
+    </select>
+    
+    <div id="quoteDisplay"></div>
+    
+    <button id="newQuote">Show New Quote</button>
+    <button id="syncQuotes">Sync Quotes</button>
+    
+    <script src="script.js"></script>
 </body>
 </html>
