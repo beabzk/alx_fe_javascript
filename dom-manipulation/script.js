@@ -153,7 +153,7 @@ async function syncQuotes() {
     populateCategories();
     
     // Notify user of sync
-    notifyUser('Quotes synced with server');
+    notifyUser('Quotes synced with server!');
   } catch (error) {
     console.error('Error syncing with server:', error);
     notifyUser('Failed to sync with server', 'error');
